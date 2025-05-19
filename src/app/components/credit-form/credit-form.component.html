@@ -1,0 +1,136 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2>{{ isEditMode ? 'Modifier le Crédit' : 'Ajouter un Crédit' }}</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+      
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+      
+      <form [formGroup]="creditForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+        <div class="mb-3">
+          <label for="montant" class="form-label">Montant (€)</label>
+          <input 
+            type="number" 
+            class="form-control" 
+            id="montant" 
+            formControlName="montant"
+            [ngClass]="{'is-invalid': submitted && f['montant'].errors}"
+          >
+          <div *ngIf="submitted && f['montant'].errors" class="invalid-feedback">
+            <div *ngIf="f['montant'].errors['required']">Le montant est requis</div>
+            <div *ngIf="f['montant'].errors['min']">Le montant minimum est de 1000€</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="dureeRemboursement" class="form-label">Durée (mois)</label>
+          <input 
+            type="number" 
+            class="form-control" 
+            id="dureeRemboursement" 
+            formControlName="dureeRemboursement"
+            [ngClass]="{'is-invalid': submitted && f['dureeRemboursement'].errors}"
+          >
+          <div *ngIf="submitted && f['dureeRemboursement'].errors" class="invalid-feedback">
+            <div *ngIf="f['dureeRemboursement'].errors['required']">La durée est requise</div>
+            <div *ngIf="f['dureeRemboursement'].errors['min']">La durée minimum est de 6 mois</div>
+            <div *ngIf="f['dureeRemboursement'].errors['max']">La durée maximum est de 360 mois (30 ans)</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="tauxInteret" class="form-label">Taux d'intérêt (%)</label>
+          <input 
+            type="number" 
+            step="0.1"
+            class="form-control" 
+            id="tauxInteret" 
+            formControlName="tauxInteret"
+            [ngClass]="{'is-invalid': submitted && f['tauxInteret'].errors}"
+          >
+          <div *ngIf="submitted && f['tauxInteret'].errors" class="invalid-feedback">
+            <div *ngIf="f['tauxInteret'].errors['required']">Le taux d'intérêt est requis</div>
+            <div *ngIf="f['tauxInteret'].errors['min']">Le taux minimum est de 0.1%</div>
+            <div *ngIf="f['tauxInteret'].errors['max']">Le taux maximum est de 20%</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="clientId" class="form-label">ID Client</label>
+          <input 
+            type="number" 
+            class="form-control" 
+            id="clientId" 
+            formControlName="clientId"
+            [ngClass]="{'is-invalid': submitted && f['clientId'].errors}"
+          >
+          <div *ngIf="submitted && f['clientId'].errors" class="invalid-feedback">
+            <div *ngIf="f['clientId'].errors['required']">L'ID client est requis</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="typeCredit" class="form-label">Type de Crédit</label>
+          <select 
+            class="form-select" 
+            id="typeCredit" 
+            formControlName="typeCredit"
+            [ngClass]="{'is-invalid': submitted && f['typeCredit'].errors}"
+          >
+            <option value="Personnel">Personnel</option>
+            <option value="Immobilier">Immobilier</option>
+            <option value="Professionnel">Professionnel</option>
+          </select>
+          <div *ngIf="submitted && f['typeCredit'].errors" class="invalid-feedback">
+            <div *ngIf="f['typeCredit'].errors['required']">Le type de crédit est requis</div>
+          </div>
+        </div>
+        
+        <div class="mb-3" *ngIf="f['typeCredit'].value === 'Personnel'">
+          <label for="motif" class="form-label">Motif</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="motif" 
+            formControlName="motif"
+          >
+        </div>
+        
+        <div class="mb-3" *ngIf="f['typeCredit'].value === 'Immobilier'">
+          <label for="typeBien" class="form-label">Type de Bien</label>
+          <select 
+            class="form-select" 
+            id="typeBien" 
+            formControlName="typeBien"
+          >
+            <option [ngValue]="null">Sélectionner un type de bien</option>
+            <option *ngFor="let type of typeBienValues" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        
+        <div class="mb-3" *ngIf="f['typeCredit'].value === 'Professionnel'">
+          <label for="raisonSociale" class="form-label">Raison Sociale</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="raisonSociale" 
+            formControlName="raisonSociale"
+          >
+        </div>
+        
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+          <button type="button" class="btn btn-secondary" (click)="goBack()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -52,12 +52,13 @@
                   <th>Taux d'Intérêt</th>
                   <td>{{ credit.tauxInteret }} %</td>
                 </tr>
-                <tr>                  <th>Statut</th>
+                <tr>
+                  <th>Statut</th>
                   <td>
                     <span [ngClass]="{
-                      'badge bg-warning': credit.statut === 'EnCours',
-                      'badge bg-success': credit.statut === 'Accepte',
-                      'badge bg-danger': credit.statut === 'Rejete'
+                      'badge bg-warning': credit.statut === Statut.EN_COURS,
+                      'badge bg-success': credit.statut === Statut.ACCEPTE,
+                      'badge bg-danger': credit.statut === Statut.REJETE
                     }">
                       {{ credit.statut }}
                     </span>

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Credit } from '../../models/credit.model';
 import { CreditService } from '../../services/credit.service';
+import { Statut } from '../../models/enums';
 
 @Component({
   selector: 'app-credit-detail',
@@ -15,6 +16,7 @@ export class CreditDetailComponent implements OnInit {
   credit: Credit | null = null;
   loading = true;
   error = '';
+  Statut = Statut; // Make enum available in template
 
   constructor(
     private route: ActivatedRoute,
