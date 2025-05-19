@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2>Détail du Remboursement</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+      
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+      
+      <div *ngIf="remboursement && !loading">
+        <div class="row mb-3">
+          <div class="col-md-4 fw-bold">ID:</div>
+          <div class="col-md-8">{{ remboursement.id }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 fw-bold">Date:</div>
+          <div class="col-md-8">{{ remboursement.date | date:'dd/MM/yyyy' }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 fw-bold">Montant:</div>
+          <div class="col-md-8">{{ remboursement.montant | currency:'EUR' }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 fw-bold">Type:</div>
+          <div class="col-md-8">{{ remboursement.type }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 fw-bold">Crédit ID:</div>
+          <div class="col-md-8">{{ remboursement.creditId }}</div>
+        </div>
+      </div>
+      
+      <div class="mt-4">
+        <button class="btn btn-secondary me-2" (click)="goBack()">Retour</button>
+        <a [routerLink]="['/remboursements', remboursement?.id, 'edit']" class="btn btn-primary me-2">Modifier</a>
+        <button class="btn btn-danger" (click)="deleteRemboursement()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>

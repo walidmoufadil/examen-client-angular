@@ -1,0 +1,88 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2>{{ isEditMode ? 'Modifier le Remboursement' : 'Ajouter un Remboursement' }}</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+      
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+      
+      <form [formGroup]="remboursementForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+        <div class="mb-3">
+          <label for="date" class="form-label">Date</label>
+          <input 
+            type="date" 
+            class="form-control" 
+            id="date" 
+            formControlName="date"
+            [ngClass]="{'is-invalid': submitted && f['date'].errors}"
+          >
+          <div *ngIf="submitted && f['date'].errors" class="invalid-feedback">
+            <div *ngIf="f['date'].errors['required']">La date est requise</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="montant" class="form-label">Montant</label>
+          <input 
+            type="number" 
+            class="form-control" 
+            id="montant" 
+            formControlName="montant"
+            [ngClass]="{'is-invalid': submitted && f['montant'].errors}"
+          >
+          <div *ngIf="submitted && f['montant'].errors" class="invalid-feedback">
+            <div *ngIf="f['montant'].errors['required']">Le montant est requis</div>
+            <div *ngIf="f['montant'].errors['min']">Le montant doit être supérieur à 0</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="type" class="form-label">Type de Remboursement</label>
+          <select 
+            class="form-select" 
+            id="type" 
+            formControlName="type"
+            [ngClass]="{'is-invalid': submitted && f['type'].errors}"
+          >
+            <option value="">-- Sélectionner un type --</option>
+            <option *ngFor="let type of typeOptions" [value]="type">{{ type }}</option>
+          </select>
+          <div *ngIf="submitted && f['type'].errors" class="invalid-feedback">
+            <div *ngIf="f['type'].errors['required']">Le type est requis</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="creditId" class="form-label">Crédit</label>
+          <select 
+            class="form-select" 
+            id="creditId" 
+            formControlName="creditId"
+            [ngClass]="{'is-invalid': submitted && f['creditId'].errors}"
+          >
+            <option value="">-- Sélectionner un crédit --</option>
+            <option *ngFor="let credit of credits" [value]="credit.id">
+              Crédit #{{ credit.id }} - {{ credit.montant | currency:'EUR' }} ({{ credit.typeCredit }})
+            </option>
+          </select>
+          <div *ngIf="submitted && f['creditId'].errors" class="invalid-feedback">
+            <div *ngIf="f['creditId'].errors['required']">Le crédit est requis</div>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+          <button type="button" class="btn btn-secondary" (click)="goBack()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

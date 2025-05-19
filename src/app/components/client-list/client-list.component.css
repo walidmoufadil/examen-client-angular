@@ -1,0 +1,23 @@
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  font-weight: bold;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.btn {
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}

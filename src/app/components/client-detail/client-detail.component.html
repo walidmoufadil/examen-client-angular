@@ -1,0 +1,89 @@
+<div class="container mt-4">
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h2>Détail du Client</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+      
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+      
+      <div *ngIf="client && !loading">
+        <div class="row mb-3">
+          <div class="col-md-4 fw-bold">ID:</div>
+          <div class="col-md-8">{{ client.id }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 fw-bold">Nom:</div>
+          <div class="col-md-8">{{ client.nom }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-4 fw-bold">Email:</div>
+          <div class="col-md-8">{{ client.email }}</div>
+        </div>
+      </div>
+      
+      <div class="mt-4">
+        <button class="btn btn-secondary me-2" (click)="goBack()">Retour</button>
+        <a [routerLink]="['/clients', client?.id, 'edit']" class="btn btn-primary me-2">Modifier</a>
+        <button class="btn btn-danger" (click)="deleteClient()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Liste des crédits du client -->
+  <div class="card mt-4">
+    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+      <h3>Crédits du Client</h3>
+      <a [routerLink]="['/credits/new']" [queryParams]="{clientId: clientId}" class="btn btn-light">
+        <i class="bi bi-plus-circle"></i> Nouveau Crédit
+      </a>
+    </div>
+    <div class="card-body">
+      <div *ngIf="!credits || credits.length === 0" class="alert alert-info">
+        Ce client n'a pas encore de crédits.
+      </div>
+      
+      <div class="table-responsive" *ngIf="credits && credits.length > 0">
+        <table class="table table-striped table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Montant</th>
+              <th>Date Demande</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let credit of credits">
+              <td>{{ credit.id }}</td>
+              <td>{{ credit.typeCredit }}</td>
+              <td>{{ credit.montant | currency:'EUR' }}</td>
+              <td>{{ credit.dateDemande | date:'dd/MM/yyyy' }}</td>
+              <td>
+                <span class="badge" [ngClass]="{'bg-warning': credit.statut === 'EnCours', 
+                                                'bg-success': credit.statut === 'Accepte', 
+                                                'bg-danger': credit.statut === 'Rejete'}">
+                  {{ credit.statut }}
+                </span>
+              </td>
+              <td>
+                <a [routerLink]="['/credits', credit.id]" class="btn btn-sm btn-info">
+                  <i class="bi bi-eye"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

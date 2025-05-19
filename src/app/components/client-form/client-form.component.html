@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2>{{ isEditMode ? 'Modifier le Client' : 'Ajouter un Client' }}</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+      
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+      
+      <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+        <div class="mb-3">
+          <label for="nom" class="form-label">Nom</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="nom" 
+            formControlName="nom"
+            [ngClass]="{'is-invalid': submitted && f['nom'].errors}"
+          >
+          <div *ngIf="submitted && f['nom'].errors" class="invalid-feedback">
+            <div *ngIf="f['nom'].errors['required']">Le nom est requis</div>
+            <div *ngIf="f['nom'].errors['maxlength']">Le nom ne doit pas dépasser 100 caractères</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="email" 
+            formControlName="email"
+            [ngClass]="{'is-invalid': submitted && f['email'].errors}"
+          >
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">L'email est requis</div>
+            <div *ngIf="f['email'].errors['email']">Veuillez entrer un email valide</div>
+            <div *ngIf="f['email'].errors['maxlength']">L'email ne doit pas dépasser 100 caractères</div>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+          <button type="button" class="btn btn-secondary" (click)="goBack()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
