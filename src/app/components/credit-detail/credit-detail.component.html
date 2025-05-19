@@ -1,0 +1,100 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h2>Détails du Crédit</h2>
+      <div>
+        <button class="btn btn-sm btn-light me-2" (click)="goToEdit()">
+          <i class="bi bi-pencil"></i> Modifier
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="deleteCredit()">
+          <i class="bi bi-trash"></i> Supprimer
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+      
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+      
+      <div *ngIf="credit && !loading">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h5>Informations de Base</h5>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th>ID</th>
+                  <td>{{ credit.id }}</td>
+                </tr>
+                <tr>
+                  <th>Montant</th>
+                  <td>{{ credit.montant }} €</td>
+                </tr>
+                <tr>
+                  <th>Date de Demande</th>
+                  <td>{{ credit.dateDemande | date:'dd/MM/yyyy' }}</td>
+                </tr>
+                <tr *ngIf="credit.dateAcceptation">
+                  <th>Date d'Acceptation</th>
+                  <td>{{ credit.dateAcceptation | date:'dd/MM/yyyy' }}</td>
+                </tr>
+                <tr>
+                  <th>Durée (mois)</th>
+                  <td>{{ credit.dureeRemboursement }}</td>
+                </tr>
+                <tr>
+                  <th>Taux d'Intérêt</th>
+                  <td>{{ credit.tauxInteret }} %</td>
+                </tr>
+                <tr>                  <th>Statut</th>
+                  <td>
+                    <span [ngClass]="{
+                      'badge bg-warning': credit.statut === 'EnCours',
+                      'badge bg-success': credit.statut === 'Accepte',
+                      'badge bg-danger': credit.statut === 'Rejete'
+                    }">
+                      {{ credit.statut }}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Type de Crédit</th>
+                  <td>{{ credit.typeCredit }}</td>
+                </tr>
+                <tr *ngIf="credit.motif">
+                  <th>Motif</th>
+                  <td>{{ credit.motif }}</td>
+                </tr>
+                <tr *ngIf="credit.typeBien">
+                  <th>Type de Bien</th>
+                  <td>{{ credit.typeBien }}</td>
+                </tr>
+                <tr *ngIf="credit.raisonSociale">
+                  <th>Raison Sociale</th>
+                  <td>{{ credit.raisonSociale }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="col-md-6">
+            <h5>Détails du Client</h5>
+            <div class="alert alert-info">
+              Client ID: {{ credit.clientId }}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-4">
+        <button class="btn btn-secondary" (click)="goBack()">Retour</button>
+      </div>
+    </div>
+  </div>
+</div>

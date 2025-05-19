@@ -27,19 +27,17 @@ export class CreditDetailComponent implements OnInit {
     if (id) {
       this.loadCredit(Number(id));
     } else {
-      this.error = 'ID de cr�dit non trouv�';
+      this.error = 'ID de crédit non trouvé';
       this.loading = false;
     }
-  }
-
-  loadCredit(id: number): void {
+  }  loadCredit(id: number): void {
     this.creditService.getCreditById(id).subscribe({
       next: (credit: Credit) => {
         this.credit = credit;
         this.loading = false;
       },
       error: (error: any) => {
-        this.error = 'Erreur lors du chargement du cr�dit: ' + error.message;
+        this.error = 'Erreur lors du chargement du crédit: ' + error.message;
         this.loading = false;
       }
     });
@@ -58,13 +56,41 @@ export class CreditDetailComponent implements OnInit {
   deleteCredit(): void {
     if (!this.credit) return;
     
-    if (confirm('�tes-vous s�r de vouloir supprimer ce cr�dit?')) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce crédit?')) {
       this.loading = true;
       this.creditService.deleteCredit(this.credit.id!).subscribe({
         next: () => {
           this.router.navigate(['/credits']);
         },
-        error: (error: any) => {
+        error: (error) => {
+          this.error = 'Erreur lors de la suppression: ' + error.message;
+          this.loading = false;
+        }
+      });
+    }
+  }
+}
+
+  goBack(): void {
+    this.router.navigate(['/credits']);
+  }
+
+  goToEdit(): void {
+    if (this.credit) {
+      this.router.navigate([`/credits/${this.credit.id}/edit`]);
+    }
+  }
+
+  deleteCredit(): void {
+    if (!this.credit) return;
+    
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce crédit?')) {
+      this.loading = true;
+      this.creditService.deleteCredit(this.credit.id).subscribe({
+        next: () => {
+          this.router.navigate(['/credits']);
+        },
+        error: (error) => {
           this.error = 'Erreur lors de la suppression: ' + error.message;
           this.loading = false;
         }
